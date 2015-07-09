@@ -1,0 +1,70 @@
+#!/usr/bin/env node
+
+var tabtab = require('tabtab'),
+	fs = require('fs');
+
+if(process.argv[2] === 'completion') {
+	return tabtab.complete('rjDev', function(err, data) {
+		// simply return here if there's an error or data not provided.
+		// stderr not showing on completions
+		var args = process.argv.slice(5);
+		if(err || !data) {
+			return;
+		}
+
+		var dir = process.cwd();
+		// console.log(args);
+		if (!args[1] && args[1] != '') { // Autocompletes file
+			// var dir = fs.readdirSync(dir).map(function (i) {
+			// 	console.log(i);
+			// 	if (fs.statSync(dir + '/' + i).isDirectory())
+			// 		return i + '/';
+			// 	else
+			// 		return i;
+			// });
+			tabtab.log(fs.readdirSync(dir), data);
+
+		} else { // Autocompletes json property
+			try {
+				var file = dir + '/' + args[0];
+				var json = require(file);
+				if (args[2] == '') {
+
+				} else
+					tabtab.log(Object.keys(json), data);
+			} catch (e) {
+				console.error(e);
+			}
+		}
+	});
+}
+
+var args = require('yargs')
+		.usage('Usage: $0 <file> [options]')
+		.argv;
+
+if (!process.argv[2] || process.argv[2].indexOf('-') == 0)
+	process.exit(1);
+
+var file =  process.cwd() + '/' + process.argv[2];
+try {
+	var json = require(file);
+} catch (e) {
+	process.exit(1);
+}
+
+if (process.argv[3] && process.argv[3].indexOf('-') === 0)
+	process.argv[3] = false;
+
+if (process.argv[3]) {
+	var p = eval('json.' + process.argv[3]);
+	if (typeof p == 'object' && !args.j)
+		console.log(require('prettyjson').render(p))
+	else
+		console.log(p);
+} else {
+	if (args.j)
+		console.log(json);
+	else
+		console.log(require('prettyjson').render(json));
+}

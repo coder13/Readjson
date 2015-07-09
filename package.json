@@ -1,0 +1,20 @@
+{
+  "name": "readjson",
+  "version": "0.0.0",
+  "description": "",
+  "main": "readjson.js",
+  "bin": {
+    "readjson": "./readjson",
+    "rj": "./readjson"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "prettyjson": "~1.1.0",
+    "tabtab": "0.0.4",
+    "yargs": "~3.5.4"
+  }
+}
