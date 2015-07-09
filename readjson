@@ -4,7 +4,7 @@ var tabtab = require('tabtab'),
 	fs = require('fs');
 
 if(process.argv[2] === 'completion') {
-	return tabtab.complete('rjDev', function(err, data) {
+	return tabtab.complete(process.argv[1].split('/').slice(-1), function(err, data) {
 		// simply return here if there's an error or data not provided.
 		// stderr not showing on completions
 		var args = process.argv.slice(5);
@@ -13,15 +13,7 @@ if(process.argv[2] === 'completion') {
 		}
 
 		var dir = process.cwd();
-		// console.log(args);
 		if (!args[1] && args[1] != '') { // Autocompletes file
-			// var dir = fs.readdirSync(dir).map(function (i) {
-			// 	console.log(i);
-			// 	if (fs.statSync(dir + '/' + i).isDirectory())
-			// 		return i + '/';
-			// 	else
-			// 		return i;
-			// });
 			tabtab.log(fs.readdirSync(dir), data);
 
 		} else { // Autocompletes json property
